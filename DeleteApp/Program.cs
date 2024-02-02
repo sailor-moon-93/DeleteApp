@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace DeleteApp
@@ -105,16 +106,25 @@ namespace DeleteApp
             }
             
 
-            Console.WriteLine("\nВведите часть имени файла, согласно которому они будут удалены:");
+            Console.WriteLine("\nВведите часть имени файла, согласно которой они будут удалены:");
             string? key = Console.ReadLine();
 
 
-            DeleteFiles(directoryPath, key);
-            Console.WriteLine("\nВывести инфо о папке после удаления?");
+            Console.WriteLine($"\nЭто действие удалит все файлы из каталога {directoryPath}, у которых имя содержит {key}. Это действие необратимо. Вы уверены? ");
             answer = Console.ReadLine();
             if (answer.ToLower() == "yes" || answer.ToLower() == "да")
             {
-                GetInfo(directoryPath);
+                DeleteFiles(directoryPath, key);
+                Console.WriteLine("\nВывести инфо о папке после удаления?");
+                answer = Console.ReadLine();
+                if (answer.ToLower() == "yes" || answer.ToLower() == "да")
+                {
+                    GetInfo(directoryPath);
+                }
+            }
+            else
+            {
+                Process.GetCurrentProcess().Kill();
             }
         }
     }
